@@ -1,4 +1,4 @@
-import Listview from "./components/Listview/Listview";
+import Listview from "./screens/Listview";
 import { AppLayoutContainer, GlobalStyle } from "./styles";
 
 const App = () => {

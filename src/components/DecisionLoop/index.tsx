@@ -1,4 +1,4 @@
-import ShowNumbers from "../ShowNumbers/ShowNumbers";
+import ShowNumbers from "../ShowNumbers";
 
 const DecisionLoop = () => {
   const numbers: number[] = [1, 2, 6, 78, 90, 35];

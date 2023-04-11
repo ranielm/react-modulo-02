@@ -1,4 +1,4 @@
-import styled, {createGlobalStyle} from 'styled-components'
+import styled, { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
    * {
@@ -17,14 +17,18 @@ export const GlobalStyle = createGlobalStyle`
 `;
 
 export const AppLayoutContainer = styled.div`
-   display: flex;
-   flex-direction: column;
-   justify-content: center;
-   align-items: center;
-   padding: 3 rem;
-   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 3 rem;
+  min-height: 100vh;
 `;
 
 export const globalColorsObject = {
-   primaryColor: '#FFC93f'
-}
+  primaryColor: "#FFC93f",
+};
+
+export const colors = {
+  primary: "#FFC93F",
+};
