@@ -43,7 +43,7 @@ const Listview = () => {
     <ListContainer>
       <TodoListContainer>
         {tasks.map((eachTask) => (
-          <TodoListItem key={eachTask.id}>
+          <TodoListItem key={eachTask.id} isComplete={eachTask.isComplete}>
             <Checkbox
               key={eachTask.id}
               checked={eachTask.isComplete}
