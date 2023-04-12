@@ -1,6 +1,5 @@
-import styled, { StyledComponent } from "styled-components";
+import styled from "styled-components";
 import { colors } from "../../styles";
-import { ComponentProps } from "react";
 
 const CheckboxContainer = styled.div`
   display: inline-block;
@@ -34,12 +33,11 @@ const StyledCheckbox = styled.div<CheckboxProps>`
   transition: all 100ms;
 `;
 
-type Props = ComponentProps<StyledComponent<"input", {}>>;
-
-const Checkbox = ({ checked, ...props }: Props) => {
+const Checkbox = ({ checked }: CheckboxProps) => {
+  console.log("🚀 ~ file: Checkbox.tsx:37 ~ Checkbox ~ checked:", checked);
   return (
     <CheckboxContainer>
-      <HiddenCheckbox {...props} type="checkbox" />
+      <HiddenCheckbox type="checkbox" />
       <StyledCheckbox checked={checked} />
     </CheckboxContainer>
   );
