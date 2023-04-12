@@ -30,16 +30,39 @@ const Listview = () => {
     }
   };
 
+  const updateTaskCompletion = (taskId: string, isComplete: boolean) => {
+    setTasks((tasks) => tasks.map((task) => {
+      if (task.id === taskId) return { ...task, isComplete }
+      return task;
+    })
+    )
+  }
+
+  const handleTaskCompleteChange = (event: ChangeEvent<HTMLInputElement>, eachTask: ITask) => {
+    updateTaskCompletion(eachTask.id, event.target.checked)
+  }
+
   return (
     <ListContainer>
       <TodoListContainer>
+
         {tasks.map((eachTask) => (
-          <TodoListItem key={eachTask.id}>
-            <Checkbox key={eachTask.id} checked={eachTask.isComplete} />
+
+          <TodoListItem key={eachTask.id} isComplete={eachTask.isComplete}>
+
+            <Checkbox key={eachTask.id} checked={eachTask.isComplete}
+              onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                handleTaskCompleteChange(event, eachTask)
+              }
+            />
+
             <Spacer width={2} />
+
             {eachTask.label}
+
             <Spacer flex={1} />
           </TodoListItem>
+
         ))}
       </TodoListContainer>
       <Spacer height={4} />

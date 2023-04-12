@@ -15,11 +15,17 @@ export const TodoListContainer = styled.div`
   flex-direction: column;
 `;
 
-export const TodoListItem = styled.label`
+interface ITodoListItemProps {
+  isComplete: boolean
+}
+
+export const TodoListItem = styled.label<ITodoListItemProps>`
   display: flex;
   padding: 0.5rem 0;
   align-items: center;
   font-size: 1.2rem;
+  text-decoration: ${(props) => (props.isComplete ? "line-through" : "none")};
+  text-decoration-color: blue;
 `;
 
 export const Input = styled.input`
