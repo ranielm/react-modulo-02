@@ -34,7 +34,6 @@ const StyledCheckbox = styled.div<CheckboxProps>`
 `;
 
 const Checkbox = ({ checked }: CheckboxProps) => {
-  console.log("🚀 ~ file: Checkbox.tsx:37 ~ Checkbox ~ checked:", checked);
   return (
     <CheckboxContainer>
       <HiddenCheckbox type="checkbox" />
