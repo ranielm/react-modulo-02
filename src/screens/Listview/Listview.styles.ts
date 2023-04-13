@@ -25,7 +25,7 @@ export const TodoListItem = styled.label<ITodoListItemProps>`
   align-items: center;
   font-size: 1.2rem;
   text-decoration: ${(props) => (props.isComplete ? "line-through" : "none")};
-  text-decoration-color: blue;
+  text-decoration-color: #fff;
 `;
 
 export const Input = styled.input`
