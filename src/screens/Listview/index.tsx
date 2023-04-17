@@ -1,7 +1,15 @@
-import { useState, ChangeEvent, KeyboardEvent, useEffect } from "react";
+import {
+  useState,
+  ChangeEvent,
+  KeyboardEvent,
+  useEffect,
+  useRef,
+  useMemo,
+} from "react";
 import Checkbox from "../../components/Checkbox";
 import Spacer from "../../components/Spacer";
 import {
+  Button,
   Input,
   ListContainer,
   TodoListContainer,
@@ -15,6 +23,24 @@ const Listview = () => {
   const [newTaskLabel, setNewTaskLabel] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
+  const divRef = useRef<HTMLDivElement | null>(null);
+  const colors = useRef(["#666", "#555"]);
+  const currentIndex = useRef(0);
+
+  const filteredTasks = useMemo(() => {
+    const startTime = performance.now();
+    const filteredTasksTemp = tasks.filter((task) =>
+      task.label.toLowerCase().includes(searchTerm.toLocaleUpperCase())
+    );
+    const endTime = performance.now();
+    const elapsedTime = endTime - startTime;
+    console.log(
+      "🚀 ~ file: index.tsx:37 ~ filteredTasks ~ elapsedTime:",
+      elapsedTime
+    );
+    return filteredTasksTemp;
+  }, [searchTerm, tasks]);
+
   const handleSearchTermChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
@@ -24,14 +50,14 @@ const Listview = () => {
   };
 
   const saveTasks = (updateTasks: ITask[]) => {
-    const tasksString = JSON.stringify(updateTasks)
-    localStorage.setItem("tasks", tasksString)
-  }
+    const tasksString = JSON.stringify(updateTasks);
+    localStorage.setItem("tasks", tasksString);
+  };
 
   const addTask = (label: string) => {
     const id = nanoid();
-    const currentTask: ITask = { id, label: label, isComplete: false }
-    const updateTasks = [...tasks, currentTask]
+    const currentTask: ITask = { id, label: label, isComplete: false };
+    const updateTasks = [...tasks, currentTask];
     setTasks(updateTasks);
     saveTasks(updateTasks);
   };
@@ -44,32 +70,45 @@ const Listview = () => {
   };
 
   const updateTaskCompletion = (taskId: string, isComplete: boolean) => {
-    setTasks((tasks) => tasks.map((task) => {
-      if (task.id === taskId) return { ...task, isComplete }
-      return task;
-    })
-    )
-  }
+    setTasks((tasks) =>
+      tasks.map((task) => {
+        if (task.id === taskId) return { ...task, isComplete };
+        return task;
+      })
+    );
+  };
 
-  const handleTaskCompleteChange = (event: ChangeEvent<HTMLInputElement>, eachTask: ITask) => {
-    updateTaskCompletion(eachTask.id, event.target.checked)
-  }
+  const handleTaskCompleteChange = (
+    event: ChangeEvent<HTMLInputElement>,
+    eachTask: ITask
+  ) => {
+    updateTaskCompletion(eachTask.id, event.target.checked);
+  };
+
+  const handleButtonClick = () => {
+    const divElement = divRef.current;
+    const colorsList = colors.current;
+
+    if (divElement && colorsList && colorsList.length > 0) {
+      divElement.style.backgroundColor = colorsList[currentIndex.current];
+      currentIndex.current = currentIndex.current === 0 ? 1 : 0;
+    }
+  };
 
   useEffect(() => {
     const fetchTasks = () => {
-      const tasksString = localStorage.getItem("tasks")
+      const tasksString = localStorage.getItem("tasks");
       if (tasksString) {
-        const tasksArray = JSON.parse(tasksString)
-        setTasks(tasksArray)
+        const tasksArray = JSON.parse(tasksString);
+        setTasks(tasksArray);
       }
-    }
+    };
 
     fetchTasks();
-  }, [])
+  }, []);
 
   return (
     <ListContainer>
-
       <Input
         placeholder="Search tasks"
         value={searchTerm}
@@ -78,12 +117,14 @@ const Listview = () => {
 
       <Spacer height={4} />
 
-      <TodoListContainer>
-
-        {tasks.filter((eachTask) => eachTask.label.includes(searchTerm))
+      <TodoListContainer ref={divRef}>
+        {tasks
+          .filter((eachTask) => eachTask.label.includes(searchTerm))
           .map((eachTask) => (
             <TodoListItem key={eachTask.id} isComplete={eachTask.isComplete}>
-              <Checkbox key={eachTask.id} checked={eachTask.isComplete}
+              <Checkbox
+                key={eachTask.id}
+                checked={eachTask.isComplete}
                 onChange={(event: ChangeEvent<HTMLInputElement>) =>
                   handleTaskCompleteChange(event, eachTask)
                 }
@@ -93,10 +134,13 @@ const Listview = () => {
               <Spacer flex={1} />
             </TodoListItem>
           ))}
-
       </TodoListContainer>
 
-      <Spacer height={4} />
+      <Spacer height={2} />
+
+      <Button onClick={handleButtonClick}>Alterar a cor de fundo</Button>
+
+      <Spacer height={2} />
 
       <Input
         placeholder="Add a task"
@@ -104,7 +148,6 @@ const Listview = () => {
         onChange={handleNewTaskLabelChange}
         onKeyPress={handleNewTaskKeyPress}
       />
-
     </ListContainer>
   );
 };

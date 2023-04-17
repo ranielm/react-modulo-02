@@ -8,7 +8,7 @@ export const ListContainer = styled.div`
 `;
 
 export const TodoListContainer = styled.div`
-  background: grey;
+  background: #555;
   border-radius: 1rem;
   padding: 3rem 1rem;
   display: flex;
@@ -35,3 +35,13 @@ export const Input = styled.input`
   color: #fff;
   padding: 20px 24px;
 `;
+
+export const Button = styled.button`
+  padding: 8px;
+  background-color: #0074b7;
+  color: #fff;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+`
