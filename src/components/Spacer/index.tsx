@@ -14,7 +14,9 @@ const StyledSpacer = styled.div<SpacerProps>`
 `;
 
 const Spacer = ({ height, width, flex }: SpacerProps) => {
-  return <StyledSpacer height={height} width={width} flex={flex} />;
+  return (
+
+    <StyledSpacer height={height} width={width} flex={flex} />)
 };
 
 export default Spacer;
