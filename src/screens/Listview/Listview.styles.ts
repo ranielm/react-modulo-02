@@ -16,10 +16,10 @@ export const TodoListContainer = styled.div`
 `;
 
 interface ITodoListItemProps {
-  isComplete: boolean
+  isComplete: boolean;
 }
 
-export const TodoListItem = styled.label<ITodoListItemProps>`
+export const StyledTodoListItem = styled.label<ITodoListItemProps>`
   display: flex;
   padding: 0.5rem 0;
   align-items: center;
@@ -28,7 +28,7 @@ export const TodoListItem = styled.label<ITodoListItemProps>`
   text-decoration-color: #fff;
 `;
 
-export const Input = styled.input`
+export const StyledInput = styled.input`
   background: rgba(0, 0, 0, 0.5);
   border: none;
   border-radius: 15px;

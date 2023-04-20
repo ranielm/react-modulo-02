@@ -1,23 +1,18 @@
 import { useTask } from "../../context/task.contex";
-import { Input } from "../../screens/Listview/Listview.styles"
-
+import { StyledInput } from "../../screens/Listview/Listview.styles";
 
 const SearchTerm = () => {
+  const { searchTerm, setSearchTerm } = useTask();
 
-    const { searchTerm, setSearchTerm } = useTask();
+  return (
+    <>
+      <StyledInput
+        placeholder="Search tasks"
+        value={searchTerm}
+        onChange={(event) => setSearchTerm(event.target.value)}
+      />
+    </>
+  );
+};
 
-
-    return (
-        <>
-        <Input
-            placeholder="Search tasks"
-            value={searchTerm}
-            onChange={(event) => setSearchTerm(event.target.value)}
-        />
-        </>
-    )
-
-
-}
-
-export { SearchTerm }
+export { SearchTerm };

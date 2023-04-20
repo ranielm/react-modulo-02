@@ -1,72 +1,101 @@
-import { useState, ChangeEvent, KeyboardEvent, useEffect } from "react";
-import Checkbox from "../../components/Checkbox";
-import Spacer from "../../components/Spacer";
 import {
-  Input,
-  ListContainer,
-  TodoListContainer,
-  TodoListItem,
-} from "./Listview.styles";
+  useState,
+  ChangeEvent,
+  KeyboardEvent,
+  useEffect,
+  useCallback,
+} from "react";
+import Spacer from "../../components/Spacer";
+import { ListContainer, TodoListContainer } from "./Listview.styles";
 import { ITask } from "./Listview.types";
 import { useTask } from "../../context/task.contex";
 import { SearchTerm } from "../../components/SearchTerm";
-import { TaskStatus } from "../../components/TaksStatus";
+import TodoListItem from "../../components/TodoListItem";
+import AddTaskInput from "../../components/Input";
 
 const Listview = () => {
   const { tasksFilter, addTask, updateTaskCompletion, Status } = useTask();
-  const [newTaskLabel, setNewTaskLabel] = useState("");
+  const [newTaskLabel1, setNewTaskLabel1] = useState("");
+  const [newTaskLabel2, setNewTaskLabel2] = useState("");
 
+  // const handleNewTaskLabelChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   setNewTaskLabel1(event.target.value);
+  // };
 
-  const handleNewTaskLabelChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setNewTaskLabel(event.target.value);
+  const handleNewTaskKeyPress1 = useCallback(
+    (event: KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === "Enter" && newTaskLabel1 !== "") {
+        addTask(newTaskLabel1);
+        setNewTaskLabel1("");
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [newTaskLabel1]
+  );
+
+  const handleNewTaskKeyPress2 = useCallback(
+    (event: KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === "Enter" && newTaskLabel2 !== "") {
+        addTask(newTaskLabel1);
+        setNewTaskLabel2("");
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [newTaskLabel2]
+  );
+
+  const handleTaskCompleteChange = (
+    event: ChangeEvent<HTMLInputElement>,
+    eachTask: ITask
+  ) => {
+    updateTaskCompletion(eachTask.id, event.target.checked);
   };
 
-  const handleNewTaskKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter" && newTaskLabel !== "") {
-      addTask(newTaskLabel);
-      setNewTaskLabel("");
-    }
-  };
+  const handleNewTaskLabelChange1 = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setNewTaskLabel1(event.target.value);
+    },
+    []
+  );
 
+  const handleNewTaskLabelChange2 = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setNewTaskLabel2(event.target.value);
+    },
+    []
+  );
 
-  const handleTaskCompleteChange = (event: ChangeEvent<HTMLInputElement>, eachTask: ITask) => {
-    updateTaskCompletion(eachTask.id, event.target.checked)
-  }
+  useEffect(() => {
+    console.log("\n");
+    console.log("🚀 ~ file: index.tsx:33 ~ Listview");
+  }, []);
 
   return (
     <ListContainer>
-
       <SearchTerm />
-
       {Status}
-     
-
       <TodoListContainer>
-
         {tasksFilter.map((eachTask) => (
-          <TodoListItem key={eachTask.id} isComplete={eachTask.isComplete}>
-            <Checkbox key={eachTask.id} checked={eachTask.isComplete}
-              onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                handleTaskCompleteChange(event, eachTask)
-              }
-            />
-            <Spacer width={2} />
-            {eachTask.label}
-            <Spacer flex={1} />
-          </TodoListItem>
+          <TodoListItem
+            eachTask={eachTask}
+            handleTaskCompleteChange={handleTaskCompleteChange}
+          />
         ))}
-
       </TodoListContainer>
-
       <Spacer height={4} />
-
-      <Input
-        placeholder="Add a task"
-        value={newTaskLabel}
-        onChange={handleNewTaskLabelChange}
-        onKeyPress={handleNewTaskKeyPress}
+      <AddTaskInput
+        placeholder="Add first task"
+        newTaskLabel={newTaskLabel1}
+        handleNewTaskLabelChange={handleNewTaskLabelChange1}
+        handleNewTaskKeyPress={handleNewTaskKeyPress1}
       />
-
+      <Spacer height={2} />
+      <AddTaskInput
+        placeholder="Add second task"
+        newTaskLabel={newTaskLabel2}
+        handleNewTaskLabelChange={handleNewTaskLabelChange2}
+        handleNewTaskKeyPress={handleNewTaskKeyPress2}
+      />
     </ListContainer>
   );
 };
